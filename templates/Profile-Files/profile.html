@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block navbar_right %}
+<li class="nav-item">
+    <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 style="text-align: center;">Profile</h1>
+    <hr style="background-color: black;">
+
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <div id="progressText" style="font-size: 20px; font-weight: bold; margin-right: 10px;">{{ (percentage|round|int) % 100 }}%</div>
+        <div id="myProgress" style="flex-grow: 1;">
+            <div id="myBar"></div>
+            <!-- <div class="checkpoint" style="left: 25%"></div>
+            <div class="checkpoint" style="left: 50%"></div>
+            <div class="checkpoint" style="left: 75%"></div>  -->
+        </div>
+        <button id="giftsButton" class="btn btn-primary" style="margin-left: 10px;">PROGRESS</button>
+    </div>
+
+    <p><strong>Full Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Hours Completed:</strong> {{ user.hours_completed }}</p>
+    <p><strong>Gift Cards Earned: </strong> {{ (user.hours_completed / 12)|int }}
+    <b>(For every 12 hours of tutoring - you get a $50 Amazon Gift Card) <b>
+</div>
+
+<style>
+    #myProgress {
+        width: 100%;
+        background-color: lightgray;
+        border-radius: 15px;
+        border: 2px solid black;
+        position: relative;
+        height: 20px;
+    }
+
+    #myBar {
+        height: 16px;
+        background-color: #0a4af5;
+        border-radius: 15px;
+        border: 1.5px solid black;
+    }
+
+    #progressText {
+        text-align: left;
+        font-size: 25px;
+    }
+
+    .checkpoint {
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .checkpoint.reached {
+        background-color: #3fc047;
+    }
+</style>
+
+<script>
+    function move(hoursCompleted, goal) {
+        var elem = document.getElementById("myBar");
+        if(hoursCompleted < goal){
+            var percentage = Math.ceil((hoursCompleted / goal) * 100);
+        } else {
+            var percentage = Math.ceil(((hoursCompleted % goal) / goal) * 100);
+        }
+        
+        elem.style.width = percentage + "%";
+        
+        var checkpoints = document.getElementsByClassName('checkpoint');
+        for (var i = 0; i < checkpoints.length; i++) {
+            var checkpoint = checkpoints[i];
+            var checkpointPercentage = parseInt(checkpoint.style.left);
+            if (percentage >= checkpointPercentage) {
+                checkpoint.classList.add('reached');
+            } else {
+                checkpoint.classList.remove('reached');
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        move({{ user.hours_completed }}, {{ goal }});
+    });
+
+    document.getElementById("giftsButton").addEventListener("click", function() {
+        var hoursCompleted = {{ user.hours_completed }};
+        var goal = {{ goal }};
+        if(hoursCompleted < goal){
+            var percentage = Math.ceil((hoursCompleted / goal) * 100);
+        } else {
+            var percentage = Math.ceil(((hoursCompleted % goal) / goal) * 100);
+        }
+        alert("You are " + percentage + "% of the way to the $50 Amazon Gift Card!");
+    });
+</script>
+{% endblock %}

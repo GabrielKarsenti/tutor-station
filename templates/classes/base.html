@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Home Page{% endblock %}</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                background: #000435;
+                border-left: 7px solid #D2B48C; /* Tan, a yellowish-beige color on the left */
+                border-right: 7px solid #D2B48C; /* Tan, a yellowish-beige color on the right */
+                border-top: none; /* No border on the top */
+                border-bottom: none; /* No border on the bottom */
+                font-family: 'Times', serif; 
+            }
+            
+            .navbar {
+                background-color: #DFDFDF; /* Light gray background for the navbar */
+            }
+            
+            .container, .modal-content {
+                background: white;
+                padding: 20px;
+            }
+            .footer {
+                background-color: black;
+                color: white;
+                font-size: 15px;
+                opacity: 0.75;
+                margin-top: 20px;
+                text-align: center;
+                padding: 20px;
+            }
+            .footer ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            .footer li {
+                padding: 5px;
+            }
+            /* The side navigation menu */
+            .sidenav {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #111;
+                overflow-x: hidden;
+                padding-top: 60px;
+                transition: 0.5s;
+            }
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 18px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+            .sidenav a:hover {
+                color: #f1f1f1;
+            }
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+            #main {
+                transition: margin-left .5s;
+                padding: 20px;
+            }
+        </style>
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+    
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("main").style.marginLeft = "0";
+            }
+        </script>
+    </head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a style="font-size:32px; color:white;"> Math </a>
+        <a href="{{ url_for('algebra_one') }}"> - Algebra One</a>
+        <a href="{{ url_for('algebra_two') }}"> - Algebra Two</a>
+        <a href="{{ url_for('calculus_ab') }}"> - Calculus AB</a>
+        <a href="{{ url_for('geometry') }}"> - Geometry</a>
+        <a href="{{ url_for('precalculus') }}"> - Precalculus</a>
+        <a href="{{ url_for('statistics') }}"> - Statistics</a>
+        <a style="font-size:32px; color:white;"> Science </a>
+        <a href="{{ url_for('biology') }}"> - Biology</a>
+        <a href="{{ url_for('chemistry') }}"> - Chemistry</a>
+        <a href="{{ url_for('physics') }}"> - Physics</a>
+        <a style="font-size:32px; color:white;"> Other </a>
+        <a href="{{ url_for('programming') }}"> - Programming</a>
+        <a href="{{ url_for('spanish') }}"> - Spanish</a>
+        <a href="{{ url_for('writing') }}"> - Writing</a>
+        <a href="{{ url_for('act') }}"> - ACT</a>
+        <a href="{{ url_for('sat') }}"> - SAT</a>
+        <a href="{{ url_for('writing') }}"></a>
+        <a href="{{ url_for('writing') }}"></a>
+        <a href="{{ url_for('writing') }}"></a>
+        <a href="{{ url_for('writing') }}"></a>
+        <a href="{{ url_for('writing') }}"></a>
+    </div>
+    
+    <div id="main">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" style="font-size:20px;cursor:pointer" onclick="openNav()">☰ Subjects</a>
+            <a class="navbar-brand" href="{{ url_for('home') }}">Home Page</a>
+            <a class="navbar-brand" href="{{ url_for('about') }}">About Us</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    {% if 'email' in session %}
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{{ url_for('profile') }}">Profile</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container mt-5">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
